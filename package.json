@@ -1,0 +1,55 @@
+{
+  "name": "serverless-reservation",
+  "version": "0.0.1",
+  "description": "Backend for Serverless Reservation",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "test": "snyk test && npm run test:unit",
+    "test:unit": "istanbul cover _mocha tests/all -- -R spec --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/piczmar/serverless-reservation"
+  },
+  "keywords": [
+    "Serverless",
+    "GraphQL",
+    "AWS",
+    "Lambda"
+  ],
+  "author": "Marcin Piczkowski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/piczmar/serverless-reservation/issues"
+  },
+  "homepage": "https://github.com/piczmar/serverless-reservation#readme",
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "chai": "^3.5.0",
+    "graphql": "^0.6.1",
+    "joi": "^10.2.2",
+    "jsonwebtoken": "^7.1.9",
+    "lodash": "^4.15.0",
+    "mocha": "^3.0.0",
+    "mocha-lcov-reporter": "^1.3.0",
+    "mock-require": "^1.3.0",
+    "sinon": "^1.17.5",
+    "stampit": "^2.1.2",
+    "util": "^0.10.3"
+  },
+  "devDependencies": {
+    "eslint": "^3.5.0",
+    "eslint-config-airbnb": "^11.0.0",
+    "eslint-config-standard": "^6.0.0",
+    "eslint-plugin-import": "^1.14.0",
+    "eslint-plugin-jsx-a11y": "^2.2.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-react": "^6.10.0",
+    "eslint-plugin-standard": "^2.1.0",
+    "istanbul": "^0.4.5",
+    "snyk": "^1.18.0"
+  }
+}

@@ -55,6 +55,23 @@ provider:
 #  exclude:
 #    - exclude-me.js
 #    - exclude-me-dir/**
+package:
+  include:
+    - node_modules
+    - src
+  exclude:
+    - coverage
+    - tests
+    - .editorconfig
+    - .eslintignore
+    - .gitignore
+    - .synk
+    - .travis.yml
+    - .create-secrets.js
+    - deploy.sh
+    - LICENSE
+    - package.json
+    - README.md
 
 functions:
   hello:
@@ -63,6 +80,15 @@ functions:
       - http:
           path: hello
           method: get
+  graphQl:
+    handler: index.graphql
+    memory: 512
+    timeout: 3
+    events:
+      - http:
+          path: graphql
+          method: post
+#          cors: true
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
