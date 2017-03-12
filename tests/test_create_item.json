@@ -1,4 +1,2 @@
-{"body": {
-			"query": "mutation ExampleMutation {createItem(id: \"1\", name: \"demo item\", description: \"demo description\") {name, createdAt}}"
-		},
+{"body": "mutation ExampleMutation {createItem(id: \"1\", name: \"demo item\", description: \"demo description\") {name, createdAt}}",
 "context" : {}}

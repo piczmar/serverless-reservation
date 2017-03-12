@@ -30,16 +30,16 @@ describe('#handler()', () => {
 
   it('return data', () => {
     const query = `{
-      item {
+      items {
         name, createdAt
       }
     }`;
 
-    return graphql.runQuery(query)
+    return graphql.runGraphQL(query)
       .then((result) => {
         expect(result).to.deep.equal({
           data: {
-            item: [{
+            items: [{
               createdAt: date1.getTime(),
               name: 'item1',
             }, {

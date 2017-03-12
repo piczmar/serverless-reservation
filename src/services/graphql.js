@@ -18,8 +18,9 @@ const GraphQLService = stampit()
     })
     .methods({
         runGraphQL(query) {
+            console.log('Running graphql with ',query);
             return graphql.graphql(this.schema, query);
-        },
+        }
     })
     .compose(Logger);
 

@@ -22,6 +22,8 @@ provider:
   runtime: nodejs4.3
   stage: dev
   profile: dev_profile
+#  apiKeys:
+#    - secret
 
 # you can overwrite defaults here
 #  stage: dev
