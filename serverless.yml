@@ -129,3 +129,9 @@ functions:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+plugins:
+  - serverless-babel-plugin
+
+custom:
+  babelPresets:
+    - latest
