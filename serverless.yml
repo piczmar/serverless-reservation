@@ -22,8 +22,8 @@ provider:
   runtime: nodejs4.3
   stage: dev
   profile: dev_profile
-#  apiKeys:
-#    - secret
+  apiKeys:
+    - secret
 
 # you can overwrite defaults here
 #  stage: dev
@@ -76,12 +76,6 @@ package:
     - README.md
 
 functions:
-  hello:
-    handler: handler.hello
-    events:
-      - http:
-          path: hello
-          method: get
   graphQl:
     handler: index.graphql
     memory: 512
@@ -90,6 +84,7 @@ functions:
       - http:
           path: graphql
           method: post
+          private: true
 #          cors: true
 
 #    The following are a few example events you can configure
