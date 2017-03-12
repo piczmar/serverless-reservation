@@ -1,4 +1,0 @@
-{"body": {
-			"query": "{item(name: \"demo item\") {name, createdAt}}"
-		},
-"context" : {}}

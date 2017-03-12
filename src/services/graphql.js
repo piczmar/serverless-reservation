@@ -1,23 +1,26 @@
-
+/**
+ * Serves all GraphQL requests using schema definition.
+ * 
+ */
 const stampit = require('stampit');
 const graphql = require('graphql');
 
-const schemaFactory = require('../query/schema');
+const schemaFactory = require('../schema');
 
 const Logger = require('../logger');
 
 const GraphQLService = stampit()
-  .init((opts) => {
-    if (!opts.instance.itemService) throw new Error('itemService is required');
+    .init((opts) => {
+        if (!opts.instance.itemService) throw new Error('itemService is required');
 
-    const schema = schemaFactory(opts.instance.itemService);
-    opts.instance.schema = schema; // eslint-disable-line no-param-reassign
-  })
-  .methods({
-    runQuery(query) {
-      return graphql.graphql(this.schema, query);
-    },
-  })
-  .compose(Logger);
+        const schema = schemaFactory(opts.instance.itemService);
+        opts.instance.schema = schema; // eslint-disable-line no-param-reassign
+    })
+    .methods({
+        runGraphQL(query) {
+            return graphql.graphql(this.schema, query);
+        },
+    })
+    .compose(Logger);
 
 module.exports = GraphQLService;
