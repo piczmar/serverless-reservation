@@ -22,8 +22,8 @@ provider:
   runtime: nodejs4.3
   stage: dev
   profile: dev_profile
-  apiKeys:
-    - secret
+#  apiKeys:
+#    - secret
   environment:
     DYNAMODB_TABLE: Items
   iamRoleStatements:
@@ -97,8 +97,7 @@ functions:
       - http:
           path: graphql
           method: post
-          private: true
-#          cors: true
+#          private: true
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
@@ -150,28 +149,10 @@ resources:
           -
             AttributeName: id
             AttributeType: S
-#          -
-#            AttributeName: name
-#            AttributeType: S
         KeySchema:
           -
             AttributeName: id
             KeyType: HASH
-#          -
-#            AttributeName: name
-#            KeyType: RANGE
-#        GlobalSecondaryIndexes:
-#        - IndexName: "category-index"
-#          KeySchema:
-#          - AttributeName: "category"
-#            KeyType: "HASH"
-#          - AttributeName: "tid"
-#            KeyType: "RANGE"
-#          Projection:
-#            ProjectionType: "ALL"
-#          ProvisionedThroughput:
-#            ReadCapacityUnits: 1
-#            WriteCapacityUnits: 1
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
