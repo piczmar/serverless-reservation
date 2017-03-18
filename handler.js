@@ -1,16 +1,30 @@
-'use strict';
 
-module.exports.hello = (event, context, callback) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-      input: event,
-    }),
-  };
+const itemService = require('./src/services/item');
+const graphQLService = require('./src/services/graphql');
 
-  callback(null, response);
+const serviceInstance = itemService();
+const graphql = graphQLService({ itemService: serviceInstance });
 
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // callback(null, { message: 'Go Serverless v1.0! Your function executed successfully!', event });
+module.exports.graphql = (event, context, cb) => {
+    console.log('Received event', event);
+
+    return graphql.runGraphQL(event.body)
+        .then((response) => {
+            console.log("Response: ",JSON.stringify(response));
+            const newResponse = {
+                statusCode: 200,
+                body: JSON.stringify(response)
+            };
+            cb(null, newResponse)})
+        .catch((err) => {
+            console.log("Error: ", err);
+
+            var myErrorObj = {
+                errorType : "InternalServerError",
+                httpStatus : 500,
+                requestId : context.awsRequestId,
+                message : "An unknown error has occurred. Please try again."
+            };
+            cb(JSON.stringify(myErrorObj))
+        });
 };

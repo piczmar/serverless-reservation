@@ -3,26 +3,35 @@
  */
 const stampit = require('stampit');
 const Logger = require('../logger');
+const AWS = require('aws-sdk');
+const dynamoDb = new AWS.DynamoDB.DocumentClient();
+const uuid = require('uuid');
+const itemsTable = 'Items';
 
 const ItemService = stampit()
     .methods({
         findByName(name) {
 
             return new Promise(function (resolve, reject) {
-
-                //TODO: for now we just return static response,
-                // in future we want to get it from database
-                var demoResp = {
-                    Count: 1,
-                    Items: [
-                        {
-                            createdAt: new Date(),
-                            name: 'item name',
-                            description: ' a demo item'
-                        }
-                    ]
+                console.log("findByName: ", name);
+                var params = {
+                    TableName : itemsTable,
+                    ProjectionExpression:"id, #name, description, createdAt, updatedAt",
+                    FilterExpression: "begins_with (#name, :name_substr)  ",
+                    ExpressionAttributeNames:{
+                        "#name": "name"
+                    },
+                    ExpressionAttributeValues: {
+                        ":name_substr":name
+                    }
                 };
-                resolve(demoResp);
+                //TODO: using scan on larg data sets is inefficient - consider replacing with query, but then need to add indexes
+                dynamoDb.scan(params, function(err, data) {
+                    console.log("DYNAMO ERR: ",err);
+                    console.log("DYNAMO RESP: ",data);
+                    if (err) return reject(err);
+                    return resolve(data);
+                });
 
             })
                 .then((resp) => this.logResults(resp))
@@ -34,21 +43,29 @@ const ItemService = stampit()
         },
         createItem(item) {
             console.log("Received item: ", item);
-            return new Promise(function (resolve, reject) {
 
-                //TODO: for now we just return static response,
-                // in future we want to save it in database
-                item.createdAt = new Date();
-                resolve(item);
+            return new Promise(function(resolve, reject) {
 
-            })
-                .then((resp) => this.logResults(resp))
-                .catch((err) => {
-                    this.log('Error running query', err);
-                    throw err;
+                const currentTime = new Date().getTime();
+                item.id = uuid.v1();
+                item.createdAt = currentTime;
+                item.updatedAt = currentTime;
+
+                var params = {
+                    TableName: itemsTable,
+                    Item: item
+                };
+
+                dynamoDb.put(params, function(err, data) {
+                    if (err) return reject(err);
+                    return resolve(item);
                 });
+
+            });
+
         },
         logResults(resp) {
+            this.log('Resp: ',resp);
             this.log('Created at: ', resp.createdAt);
             this.log('Name: ', resp.name);
             return resp;

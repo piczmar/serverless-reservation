@@ -10,10 +10,10 @@ module.exports = (itemService) => {
         name: 'Date',
         description: 'Date custom scalar type',
         parseValue(value) {
-            return new Date(value); // value from the client
+            return value; // value from the client
         },
         serialize(value) {
-            return value.getTime(); // value sent to the client
+            return value; // value sent to the client
         },
         parseLiteral(ast) {
             if (ast.kind === graphql.Kind.INT) {
@@ -26,6 +26,7 @@ module.exports = (itemService) => {
     const ItemType = new graphql.GraphQLObjectType({
         name: 'Item',
         fields: {
+            id: {type: graphql.GraphQLString},
             name: {type: graphql.GraphQLString},
             description: {type: graphql.GraphQLString},
             createdAt: {type: Date}
