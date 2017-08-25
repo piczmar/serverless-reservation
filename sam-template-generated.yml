@@ -1,0 +1,67 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: 'SAM template for Serverless framework service: '
+Resources:
+  TodosDynamoDbTable:
+    Type: 'AWS::DynamoDB::Table'
+    DeletionPolicy: Delete
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      TableName: Items
+  GraphQl:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: handler.graphql
+      Runtime: nodejs4.3
+      CodeUri: >-
+        /home/marcin/git/cloudly.tech/severless/serverless-reservation/.serverless/serverless-reservation.zip
+      MemorySize: 128
+      Timeout: 3
+      Policies:
+        - Effect: Allow
+          Action:
+            - 'dynamodb:Query'
+            - 'dynamodb:Scan'
+            - 'dynamodb:GetItem'
+            - 'dynamodb:PutItem'
+            - 'dynamodb:UpdateItem'
+            - 'dynamodb:DeleteItem'
+          Resource: 'arn:aws:dynamodb:us-east-1:*:table/Items'
+      Environment:
+        Variables:
+          DYNAMODB_TABLE: Items
+      Events:
+        Event1:
+          Type: Api
+          Properties:
+            Path: graphql
+            Method: post
+            RestApiId:
+              Ref: ServerlessReservation
+  ServerlessReservation:
+    Type: 'AWS::Serverless::Api'
+    Properties:
+      StageName: prod
+      DefinitionBody:
+        swagger: '2.0'
+        info:
+          title:
+            Ref: 'AWS::StackName'
+        paths:
+          /graphql:
+            post:
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri:
+                  'Fn::Sub': >-
+                    arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GraphQl.Arn}/invocations
+              responses: {}

@@ -22,8 +22,8 @@ provider:
   runtime: nodejs4.3
   stage: dev
   profile: dev_profile
-  apiKeys:
-    - secret
+#  apiKeys:
+#    - secret
   environment:
     DYNAMODB_TABLE: Items
   iamRoleStatements:
@@ -90,7 +90,7 @@ package:
 
 functions:
   graphQl:
-    handler: hendler.graphql
+    handler: handler.graphql
     memory: 512
     timeout: 3
     events:
@@ -144,7 +144,7 @@ resources:
   Resources:
     TodosDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Retain
+      DeletionPolicy: Delete
       Properties:
         AttributeDefinitions:
           -
@@ -176,3 +176,6 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:provider.environment.DYNAMODB_TABLE}
+
+plugins:
+  - serverless-sam
