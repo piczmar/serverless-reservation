@@ -53,7 +53,7 @@ module.exports = (itemService) => {
         })
     });
 
-    const Mutuation = new graphql.GraphQLObjectType({
+    const Mutation = new graphql.GraphQLObjectType({
         name: 'ItemMutations',
         fields: () => ( {
             createItem: {
@@ -74,7 +74,7 @@ module.exports = (itemService) => {
 
     const schema = new graphql.GraphQLSchema({
         query: Query,
-        mutation: Mutuation
+        mutation: Mutation
     });
 
     return schema;

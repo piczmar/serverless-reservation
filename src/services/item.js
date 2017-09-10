@@ -25,7 +25,7 @@ const ItemService = stampit()
                         ":name_substr":name
                     }
                 };
-                //TODO: using scan on larg data sets is inefficient - consider replacing with query, but then need to add indexes
+                //TODO: using scan on large data sets is inefficient - consider replacing with query, but then need to add indexes
                 dynamoDb.scan(params, function(err, data) {
                     console.log("DYNAMO ERR: ",err);
                     console.log("DYNAMO RESP: ",data);
